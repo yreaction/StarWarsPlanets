@@ -8,29 +8,40 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+import SwiftUI
 
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \PlanetEntity.name, ascending: true)],
-        animation: .default)
-    private var planets: FetchedResults<PlanetEntity>
+struct ContentView: View {
+    @StateObject private var viewModel = PlanetsViewModel()
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(planets) { planet in
+                ForEach(viewModel.planets, id: \.self) { planet in
                     NavigationLink {
-
                     } label: {
-                        Text(planet.name ?? "planet")
+                        Text(planet.name ?? "Unknown Planet")
                     }
+                }
+
+                if viewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                }
+            }
+            .navigationTitle("Star Wars Planets")
+            .onAppear {
+                Task {
+                    await viewModel.fetchPlanets()
                 }
             }
         }
     }
-
 }
+
+#Preview {
+    ContentView()
+}
+
 
 #Preview {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
