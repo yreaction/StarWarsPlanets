@@ -10,7 +10,7 @@ import CoreData
 
 import SwiftUI
 
-struct ContentView: View {
+struct PlanetListView: View {
     @StateObject private var viewModel = PlanetsViewModel()
 
     var body: some View {
@@ -20,6 +20,11 @@ struct ContentView: View {
                     NavigationLink {
                     } label: {
                         Text(planet.name ?? "Unknown Planet")
+                            .task {
+                                if planet == viewModel.planets.last, viewModel.hasNextPage {
+                                    await viewModel.loadMorePlanets()
+                                }
+                            }
                     }
                 }
 
@@ -29,6 +34,11 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Star Wars Planets")
+            .refreshable {
+                Task {
+                    await viewModel.refreshPlanets()
+                }
+            }
             .onAppear {
                 Task {
                     await viewModel.fetchPlanets()
@@ -39,10 +49,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
-}
-
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    PlanetListView()
 }

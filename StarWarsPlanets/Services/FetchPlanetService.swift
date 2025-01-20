@@ -8,7 +8,7 @@
 import Foundation
 
 protocol PlanetsServiceProtocol {
-    func fetchPlanets(from url: URL?) async throws
+    func fetchPlanets(from url: URL?) async throws -> URL?
 }
 
 class PlanetsService: PlanetsServiceProtocol {
@@ -21,12 +21,17 @@ class PlanetsService: PlanetsServiceProtocol {
         self.persistentStorage = persistentStorage
     }
     
-    func fetchPlanets(from url: URL?) async throws {
-        let endpoint = url == nil
-        ? PlanetsEndpoint()
-        : PlanetsEndpoint(nextURL: url!)
+    func fetchPlanets(from url: URL?) async throws -> URL? {
+        let endpoint: PlanetsEndpoint
+        if let url = url {
+            endpoint = PlanetsEndpoint(nextPage: url)
+        } else {
+            endpoint = PlanetsEndpoint()
+        }
+
         let response: PlanetsResponse = try await networkManager.request(endpoint: endpoint, responseType: PlanetsResponse.self)
         try persistentStorage.saveOrUpdatePlanets(response.results)
 
+        return response.next
     }
 }

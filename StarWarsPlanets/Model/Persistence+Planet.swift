@@ -43,6 +43,7 @@ extension PersistenceController: PersistentStorageProtocol {
             }
         }
     }
+
     private func updatePlanet(_ existingPlanet: PlanetEntity, with planet: Planet) {
         existingPlanet.diameter = planet.diameter
         existingPlanet.climate = planet.climate
@@ -59,5 +60,6 @@ extension PersistenceController: PersistentStorageProtocol {
         newPlanet.gravity = planet.gravity
         newPlanet.terrain = planet.terrain
         newPlanet.population = planet.population
+        newPlanet.timeStamp = Date()
     }
 }
