@@ -7,7 +7,11 @@
 
 import CoreData
 
-struct PersistenceController {
+protocol PersistentStorageProtocol {
+    func saveOrUpdatePlanets(_ planets: [Planet]) throws
+}
+
+class PersistenceController {
     static let shared = PersistenceController()
 
     @MainActor
@@ -15,8 +19,8 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            let newItem = PlanetEntity(context: viewContext)
+            newItem.name = "Tatooine"
         }
         do {
             try viewContext.save()
@@ -30,6 +34,10 @@ struct PersistenceController {
     }()
 
     let container: NSPersistentContainer
+
+    var viewContext: NSManagedObjectContext {
+        return container.viewContext
+    }
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "StarWarsPlanets")
