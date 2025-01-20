@@ -12,10 +12,10 @@ protocol PlanetsServiceProtocol {
 }
 
 class PlanetsService: PlanetsServiceProtocol {
-    private let networkManager: NetworkManager
+    private let networkManager: NetworkManagerProtocol
     private let persistentStorage: PersistentStorageProtocol
 
-    init(networkManager: NetworkManager = NetworkManager(),
+    init(networkManager: NetworkManagerProtocol = NetworkManager(),
          persistentStorage: PersistentStorageProtocol = PersistenceController.shared) {
         self.networkManager = networkManager
         self.persistentStorage = persistentStorage
@@ -25,7 +25,7 @@ class PlanetsService: PlanetsServiceProtocol {
         let endpoint = url == nil
         ? PlanetsEndpoint()
         : PlanetsEndpoint(nextURL: url!)
-        let response: PlanetsResponse = try await NetworkManager.request(endpoint: endpoint, responseType: PlanetsResponse.self)
+        let response: PlanetsResponse = try await networkManager.request(endpoint: endpoint, responseType: PlanetsResponse.self)
         try persistentStorage.saveOrUpdatePlanets(response.results)
 
     }

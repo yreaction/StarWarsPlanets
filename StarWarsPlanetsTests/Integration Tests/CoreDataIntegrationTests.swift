@@ -4,11 +4,9 @@
 //
 //  Created by Juan Pedro Lozano Baño on 19/1/25.
 //
-
 import XCTest
 @testable import StarWarsPlanets
 import CoreData
-
 
 final class CoreDataIntegrationTests: XCTestCase {
     private var coredataManager: PersistenceController!
@@ -19,17 +17,19 @@ final class CoreDataIntegrationTests: XCTestCase {
     }
 
     func testSaveNewPlanet() {
-        //G
+        // GIVEN
         let planet = MockPlanetData.samplePlanet
-        //W
-        coredataManager.savePlanets([planet])
-        //T
+        
+        // WHEN
+        coredataManager.saveOrUpdatePlanets([planet])
+
         let fetchRequest: NSFetchRequest<PlanetEntity> = PlanetEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", planet.name)
 
+        // THEN
         do {
-            let results = try coredataManager.viewContext.fetch(fetchRequest) // Use coredataManager's viewContext
-            XCTAssertNotNil(results.first, "Planet was not persisted") // Assert planet exists
+            let results = try coredataManager.viewContext.fetch(fetchRequest)
+            XCTAssertNotNil(results.first, "Planet was not persisted")
             XCTAssertEqual(results.first?.name, planet.name, "Planet name does not match")
             XCTAssertEqual(results.first?.population, planet.population, "Planet population does not match")
         } catch {
@@ -38,22 +38,18 @@ final class CoreDataIntegrationTests: XCTestCase {
     }
 
     func testUpdateExistingPlanet() {
-        //G
+        // GIVEN
         let testPopulation = "1000"
         let originalPlanet = Planet(name: "Madrid", diameter: "test", climate: "test", gravity: "test", terrain: "test", population: "tests")
         let updatedPlanet = Planet(name: "Madrid", diameter: "test", climate: "test", gravity: "test", terrain: "test", population: testPopulation)
 
-        //W
-        // Create new planet
-        coredataManager.savePlanets([originalPlanet])
-
-        // Update planet
-        coredataManager.savePlanets([updatedPlanet])
-
-        //T
+        // WHEN
+        coredataManager.saveOrUpdatePlanets([originalPlanet])
+        coredataManager.saveOrUpdatePlanets([updatedPlanet])
         let fetchRequest: NSFetchRequest<PlanetEntity> = PlanetEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", "Madrid")
 
+        //THEN
         do {
             let results = try coredataManager.viewContext.fetch(fetchRequest)
             XCTAssertNotNil(results.first, "Planet was not persisted")
