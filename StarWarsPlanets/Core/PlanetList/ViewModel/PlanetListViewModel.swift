@@ -42,9 +42,8 @@ class PlanetsViewModel: ObservableObject {
 
         do {
             let fetchedPlanets = try context.fetch(fetchRequest)
-            DispatchQueue.main.async {
-                self.planets = fetchedPlanets
-            }
+            planets = fetchedPlanets
+
         } catch {
             print("Failed to fetch planets from Core Data: \(error)")
         }

@@ -40,11 +40,6 @@
 			path = StarWarsPlanetsTests;
 			sourceTree = "<group>";
 		};
-		6EB771622D3D40D0008D4486 /* StarWarsPlanetsUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = StarWarsPlanetsUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +72,6 @@
 			children = (
 				6EB771422D3D40CE008D4486 /* StarWarsPlanets */,
 				6EB771582D3D40D0008D4486 /* StarWarsPlanetsTests */,
-				6EB771622D3D40D0008D4486 /* StarWarsPlanetsUITests */,
 				6EB771412D3D40CE008D4486 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -152,9 +146,6 @@
 			);
 			dependencies = (
 				6EB771612D3D40D0008D4486 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				6EB771622D3D40D0008D4486 /* StarWarsPlanetsUITests */,
 			);
 			name = StarWarsPlanetsUITests;
 			packageProductDependencies = (

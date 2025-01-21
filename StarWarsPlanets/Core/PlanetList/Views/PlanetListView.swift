@@ -8,8 +8,6 @@
 import SwiftUI
 import CoreData
 
-import SwiftUI
-
 struct PlanetListView: View {
     @StateObject private var viewModel = PlanetsViewModel()
 
@@ -18,6 +16,7 @@ struct PlanetListView: View {
             List {
                 ForEach(viewModel.planets, id: \.self) { planet in
                     NavigationLink {
+                        PlanetDetailView(viewModel: PlanetDetailViewModel(planet: planet))
                     } label: {
                         Text(planet.name ?? "Unknown Planet")
                             .task {
@@ -33,7 +32,6 @@ struct PlanetListView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                 }
             }
-            .navigationTitle("Star Wars Planets")
             .refreshable {
                 Task {
                     await viewModel.refreshPlanets()
@@ -44,6 +42,7 @@ struct PlanetListView: View {
                     await viewModel.fetchPlanets()
                 }
             }
+            .navigationTitle("Star Wars Planets")
         }
     }
 }

@@ -63,3 +63,13 @@ extension PersistenceController: PersistentStorageProtocol {
         newPlanet.timeStamp = Date()
     }
 }
+
+extension PlanetEntity {
+    static func createStub(in context: NSManagedObjectContext) -> PlanetEntity {
+        let entity = PlanetEntity(context: context)
+        entity.name = "Earth"
+        entity.terrain = "Mountainous"
+        entity.population = "7.8 Billion"
+        return entity
+    }
+}
