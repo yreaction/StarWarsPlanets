@@ -15,21 +15,22 @@ struct PlanetListView: View {
         NavigationView {
             List {
                 ForEach(viewModel.planets, id: \.self) { planet in
-                    NavigationLink {
-                        PlanetDetailView(viewModel: PlanetDetailViewModel(planet: planet))
-                    } label: {
-                        Text(planet.name ?? "Unknown Planet")
-                            .task {
-                                if planet == viewModel.planets.last, viewModel.hasNextPage {
-                                    await viewModel.loadMorePlanets()
-                                }
+                    PlanetListItemView(
+                        viewModel: PlanetListItemViewModel(planet: planet))
+                    .task {
+                        if viewModel.isLastPlanet(planet: planet) {
+                            Task {
+                                await viewModel.loadMorePlanets()
                             }
+                        }
                     }
                 }
 
                 if viewModel.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
+                    HStack(alignment: .center) {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                    }
                 }
             }
             .refreshable {
