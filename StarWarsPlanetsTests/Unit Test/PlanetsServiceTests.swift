@@ -44,7 +44,7 @@ class PlanetsServiceTests: XCTestCase {
 
         //THEN
         do {
-            try await planetsService.fetchPlanets(from: nil)
+            let _ = try await planetsService.fetchPlanets(from: nil)
             XCTAssertTrue(mockPersistentStorage.saveOrUpdatePlanetsCalled)
         } catch {
             XCTFail("Fetch failed with error: \(error)")
@@ -57,7 +57,7 @@ class PlanetsServiceTests: XCTestCase {
 
         // THEN
         do {
-            try await planetsService.fetchPlanets(from: nil)
+            let _ = try await planetsService.fetchPlanets(from: nil)
             XCTFail("Fetch should have failed")
         } catch {
             XCTAssertNotNil(error)

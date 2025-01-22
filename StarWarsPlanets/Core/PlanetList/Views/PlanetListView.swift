@@ -8,18 +8,22 @@
 import SwiftUI
 import CoreData
 
-import SwiftUI
-
-struct ContentView: View {
-    @StateObject private var viewModel = PlanetsViewModel()
+struct PlanetListView: View {
+    @StateObject private var viewModel = PlanetListViewModel()
 
     var body: some View {
         NavigationView {
             List {
                 ForEach(viewModel.planets, id: \.self) { planet in
                     NavigationLink {
+                        PlanetDetailView(viewModel: PlanetDetailViewModel(planet: planet))
                     } label: {
                         Text(planet.name ?? "Unknown Planet")
+                            .task {
+                                if planet == viewModel.planets.last, viewModel.hasNextPage {
+                                    await viewModel.loadMorePlanets()
+                                }
+                            }
                     }
                 }
 
@@ -28,21 +32,21 @@ struct ContentView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                 }
             }
-            .navigationTitle("Star Wars Planets")
+            .refreshable {
+                Task {
+                    await viewModel.refreshPlanets()
+                }
+            }
             .onAppear {
                 Task {
                     await viewModel.fetchPlanets()
                 }
             }
+            .navigationTitle("Star Wars Planets")
         }
     }
 }
 
 #Preview {
-    ContentView()
-}
-
-
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    PlanetListView()
 }

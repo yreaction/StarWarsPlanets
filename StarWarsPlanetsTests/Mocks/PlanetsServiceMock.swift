@@ -8,17 +8,18 @@ import Foundation
 @testable import StarWarsPlanets
 
 class MockPlanetsService: PlanetsServiceProtocol {
+    
     var fetchPlanetsResult: Result<Void, Error>?
     var fetchPlanetsCalled = false
     var lastFetchedURL: URL?
 
-    func fetchPlanets(from url: URL?) async throws {
+    func fetchPlanets(from url: URL?) async throws -> URL? {
         fetchPlanetsCalled = true
         lastFetchedURL = url
         if let result = fetchPlanetsResult {
             switch result {
             case .success:
-                return
+                return nil 
             case .failure(let error):
                 throw error
             }

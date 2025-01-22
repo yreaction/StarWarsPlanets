@@ -43,6 +43,7 @@ extension PersistenceController: PersistentStorageProtocol {
             }
         }
     }
+
     private func updatePlanet(_ existingPlanet: PlanetEntity, with planet: Planet) {
         existingPlanet.diameter = planet.diameter
         existingPlanet.climate = planet.climate
@@ -59,5 +60,20 @@ extension PersistenceController: PersistentStorageProtocol {
         newPlanet.gravity = planet.gravity
         newPlanet.terrain = planet.terrain
         newPlanet.population = planet.population
+        newPlanet.timeStamp = Date()
+    }
+}
+
+extension PlanetEntity {
+    static func createStub(in context: NSManagedObjectContext) -> PlanetEntity {
+        let entity = PlanetEntity(context: context)
+        entity.name = "Earth"
+        entity.terrain = "Mountainous"
+        entity.population = "7.8 Billion"
+        entity.climate = "Arid, Temperate Humid"
+        entity.terrain = "Desert, Grassland, Mountain"
+        entity.gravity = "9.8"
+        entity.diameter = "100000"
+        return entity
     }
 }
