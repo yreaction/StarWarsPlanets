@@ -21,13 +21,17 @@ class PlanetDetailViewModel: ObservableObject {
     //MARK: Init
     init(planet: PlanetEntity) {
         self.title = Self.formatTitle(from: planet.name)
-        self.statistics = PlanetStatistics(
+        self.statistics = Self.buildStatistics(from: planet)
+        self.populationDescription = Self.formatPopulation(from: planet.population, defaultValue: "Unknown Population")
+    }
+
+    static func buildStatistics(from planet: PlanetEntity) -> PlanetStatistics {
+        return PlanetStatistics(
             terrain: Self.splitAndTrimValues(planet.terrain, defaultValue: "Uknown Terrain"),
             climate: Self.splitAndTrimValues(planet.climate, defaultValue: "Uknown climate"),
             diameter: planet.diameter ?? "Unknown Diameter",
             gravity: planet.gravity ?? "Unknown Gravity"
         )
-        self.populationDescription = Self.formatPopulation(from: planet.population, defaultValue: "Unknown Population")
     }
 
     static func formatTitle(from name: String?) -> String {
@@ -44,6 +48,7 @@ class PlanetDetailViewModel: ObservableObject {
             return defaultValue
         }
     }
+
     static func formatDescription(_ description: String?, default defaultValue: String) -> String {
         return description?.isEmpty == false ? description! : defaultValue
     }

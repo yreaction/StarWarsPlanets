@@ -3,7 +3,7 @@ import CoreData
 import SwiftUI
 
 @MainActor
-class PlanetsViewModel: ObservableObject {
+class PlanetListViewModel: ObservableObject {
     @Published var planets: [PlanetEntity] = []
     @Published var isLoading: Bool = false
     @Published var hasNextPage: Bool = false
@@ -34,21 +34,6 @@ class PlanetsViewModel: ObservableObject {
         isLoading = false
     }
 
-    private func loadPlanetsFromCoreData() {
-        let context = PersistenceController.shared.viewContext
-
-        let fetchRequest: NSFetchRequest<PlanetEntity> = PlanetEntity.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \PlanetEntity.timeStamp, ascending: true)]
-
-        do {
-            let fetchedPlanets = try context.fetch(fetchRequest)
-            planets = fetchedPlanets
-
-        } catch {
-            print("Failed to fetch planets from Core Data: \(error)")
-        }
-    }
-
     func loadMorePlanets() async {
         guard !isLoading, hasNextPage, let nextURL = self.nextURL else { return }
         isLoading = true
@@ -71,6 +56,23 @@ class PlanetsViewModel: ObservableObject {
         self.nextURL = nil
         Task {
             await fetchPlanets()
+        }
+    }
+}
+
+private extension PlanetListViewModel {
+    func loadPlanetsFromCoreData() {
+        let context = PersistenceController.shared.viewContext
+
+        let fetchRequest: NSFetchRequest<PlanetEntity> = PlanetEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \PlanetEntity.timeStamp, ascending: true)]
+
+        do {
+            let fetchedPlanets = try context.fetch(fetchRequest)
+            planets = fetchedPlanets
+
+        } catch {
+            print("Failed to fetch planets from Core Data: \(error)")
         }
     }
 }

@@ -19,10 +19,11 @@ struct PlanetSceneView: View {
         scene.rootNode.addChildNode(tiltNode)
         let sphereNode = SCNNode(geometry: SCNSphere(radius: 1.0))
         let material = SCNMaterial()
-        material.diffuse.contents = UIColor.brown
+        let planetColors: [UIColor] = [.brown, .orange, .gray, .blue, .green, .red, .yellow, .systemTeal, .systemIndigo]
+        material.diffuse.contents = planetColors.randomElement()
         let bumpImage = UIImage(named: "bumpmap.jpg")
         material.normal.contents = bumpImage
-        material.normal.intensity = 0.6
+        material.normal.intensity = 0.7
         material.lightingModel = .physicallyBased
         material.isDoubleSided = true
         sphereNode.geometry?.firstMaterial = material

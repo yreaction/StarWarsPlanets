@@ -29,9 +29,22 @@
 		6EB7715F2D3D40D0008D4486 /* StarWarsPlanetsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StarWarsPlanetsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6EAAAE772D4181010036A5C5 /* Exceptions for "StarWarsPlanets" folder in "StarWarsPlanets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6EB7713F2D3D40CE008D4486 /* StarWarsPlanets */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6EB771422D3D40CE008D4486 /* StarWarsPlanets */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6EAAAE772D4181010036A5C5 /* Exceptions for "StarWarsPlanets" folder in "StarWarsPlanets" target */,
+			);
 			path = StarWarsPlanets;
 			sourceTree = "<group>";
 		};
@@ -389,6 +402,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"StarWarsPlanets/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StarWarsPlanets/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -417,6 +431,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"StarWarsPlanets/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StarWarsPlanets/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

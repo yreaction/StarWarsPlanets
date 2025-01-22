@@ -70,6 +70,10 @@ extension PlanetEntity {
         entity.name = "Earth"
         entity.terrain = "Mountainous"
         entity.population = "7.8 Billion"
+        entity.climate = "Arid, Temperate Humid"
+        entity.terrain = "Desert, Grassland, Mountain"
+        entity.gravity = "9.8"
+        entity.diameter = "100000"
         return entity
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct PlanetListView: View {
-    @StateObject private var viewModel = PlanetsViewModel()
+    @StateObject private var viewModel = PlanetListViewModel()
 
     var body: some View {
         NavigationView {
