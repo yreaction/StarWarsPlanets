@@ -43,6 +43,19 @@ struct PlanetListView: View {
                     await viewModel.fetchPlanets()
                 }
             }
+            .alert(
+                viewModel.errorMessage ?? "Service error",
+                isPresented: Binding<Bool>(
+                    get: { viewModel.errorMessage != nil },
+                    set: { if !$0 { viewModel.errorMessage = nil } }
+                )
+            ) {
+                Button("OK", role: .cancel) {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
             .navigationTitle("Star Wars Planets")
         }
     }

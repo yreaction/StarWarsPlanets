@@ -8,8 +8,8 @@ import Foundation
 
 public enum NetworkError: Error {
     case invalidURL
-    case noData
     case decodingError(Error)
+    case responseError(statusCode: Int)
     case other(Error)
 }
 
@@ -29,11 +29,19 @@ class NetworkManager: NetworkManagerProtocol {
         request.httpBody = endpoint.body
 
         do {
-            let (data, _) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw NetworkError.other(NSError(domain: "Not valid HTTPResponse", code: 0, userInfo: nil))
+            }
+            guard (200...299).contains(httpResponse.statusCode) else {
+                throw NetworkError.responseError(statusCode: httpResponse.statusCode)
+            }
+
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             let decodedResponse = try decoder.decode(responseType, from: data)
             return decodedResponse
+
         } catch let error as DecodingError {
             throw NetworkError.decodingError(error)
         } catch {
