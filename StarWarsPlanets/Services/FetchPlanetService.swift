@@ -9,6 +9,7 @@ import Foundation
 
 protocol PlanetsServiceProtocol {
     func fetchPlanets(from url: URL?) async throws -> URL?
+    func searchPlanets(query: String) async throws 
 }
 
 class PlanetsService: PlanetsServiceProtocol {
@@ -31,7 +32,13 @@ class PlanetsService: PlanetsServiceProtocol {
 
         let response: PlanetsResponse = try await networkManager.request(endpoint: endpoint, responseType: PlanetsResponse.self)
         try persistentStorage.saveOrUpdatePlanets(response.results)
-
         return response.next
+    }
+
+    func searchPlanets(query: String) async throws  {
+        let searchQuery = QueryType.search(query)
+        let planetsSearchEndpoint = PlanetsEndpoint(queries: [searchQuery])
+        let response: PlanetsResponse = try await networkManager.request(endpoint: planetsSearchEndpoint, responseType: PlanetsResponse.self)
+        try persistentStorage.saveOrUpdatePlanets(response.results)
     }
 }

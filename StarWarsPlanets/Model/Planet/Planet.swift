@@ -5,6 +5,7 @@
 //  Created by Juan Pedro Lozano Baño on 19/1/25.
 //
 import Foundation
+
 struct PlanetsResponse: Codable {
     let count: Int
     let next: URL?

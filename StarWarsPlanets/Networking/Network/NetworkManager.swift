@@ -22,8 +22,13 @@ class NetworkManager: NetworkManagerProtocol {
         endpoint: Endpoint,
         responseType: T.Type
     ) async throws -> T {
-        let url = endpoint.baseURL.appendingPathComponent(endpoint.path ?? "")
-        var request = URLRequest(url: url)
+        let url = endpoint.baseURL.appendingPathComponent(endpoint.path)
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        components?.queryItems = endpoint.queryItems
+        guard let finalURL = components?.url else {
+            throw NetworkError.invalidURL
+        }
+        var request = URLRequest(url: finalURL)
         request.httpMethod = endpoint.method
         request.allHTTPHeaderFields = endpoint.headers
         request.httpBody = endpoint.body

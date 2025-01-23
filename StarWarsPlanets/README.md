@@ -6,9 +6,9 @@ StarWarsPlanets is an iOS application that explores planets from the Star Wars u
 
 ### Requirements
 
-iOS 14.0+
+iOS 18.2+
 
-Xcode 13.0+
+Xcode 16.0+
 
 Swift 5.5+
 

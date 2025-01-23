@@ -5,10 +5,17 @@ import SwiftUI
 @MainActor
 class PlanetListViewModel: ObservableObject {
     @Published var planets: [PlanetEntity] = []
+
     @Published var isLoading: Bool = false
     @Published var hasNextPage: Bool = false
     @Published var errorMessage: String?
-
+    @Published var searchText: String = "" {
+        didSet {
+            Task {
+                await performSearch()
+            }
+        }
+    }
     private let planetsService: PlanetsServiceProtocol
     private var nextURL: URL?
 
@@ -32,6 +39,26 @@ class PlanetListViewModel: ObservableObject {
     func isLastPlanet(planet: PlanetEntity) -> Bool {
         guard let lastPlanet = planets.last else { return false }
         return planet === lastPlanet
+    }
+
+    func searchPlanets(query: String) async {
+        guard !query.isEmpty else {
+            return
+        }
+        do {
+            try await planetsService.searchPlanets(query: query)
+            loadPlanetsFromCoreData(with: query)
+        } catch {
+            handleError(error)
+        }
+    }
+    func performSearch() async {
+        if searchText.count > 2  {
+            await searchPlanets(query: searchText)
+        } else if searchText.count == 0 {
+            loadPlanetsFromCoreData()
+        }
+
     }
 }
 
@@ -57,10 +84,14 @@ private extension PlanetListViewModel {
         isLoading = false
     }
 
-    func loadPlanetsFromCoreData() {
+    func loadPlanetsFromCoreData(with query: String? = nil) {
         let context = PersistenceController.shared.viewContext
         let fetchRequest: NSFetchRequest<PlanetEntity> = PlanetEntity.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \PlanetEntity.timeStamp, ascending: true)]
+
+        if let query = query, !query.isEmpty {
+            fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@", query)
+        }
 
         do {
             let fetchedPlanets = try context.fetch(fetchRequest)

@@ -10,6 +10,7 @@ import CoreData
 
 struct PlanetListView: View {
     @StateObject private var viewModel = PlanetListViewModel()
+    @State private var searchIsActive = false
 
     var body: some View {
         NavigationView {
@@ -38,11 +39,7 @@ struct PlanetListView: View {
                     await viewModel.refreshPlanets()
                 }
             }
-            .onAppear {
-                Task {
-                    await viewModel.fetchPlanets()
-                }
-            }
+            .searchable(text: $viewModel.searchText, prompt: "Search  planet")
             .alert(
                 viewModel.errorMessage ?? "Service error",
                 isPresented: Binding<Bool>(
@@ -55,6 +52,11 @@ struct PlanetListView: View {
                 }
             } message: {
                 Text(viewModel.errorMessage ?? "")
+            }
+            .onAppear {
+                Task {
+                    await viewModel.fetchPlanets()
+                }
             }
             .navigationTitle("Star Wars Planets")
         }

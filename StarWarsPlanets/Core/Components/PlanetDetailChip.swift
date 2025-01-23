@@ -4,7 +4,6 @@
 //
 //  Created by Juan Pedro Lozano Baño on 22/1/25.
 //
-
 import SwiftUI
 
 struct PlanetDetailChip : View {

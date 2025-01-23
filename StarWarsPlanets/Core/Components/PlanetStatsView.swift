@@ -4,7 +4,6 @@
 //
 //  Created by Juan Pedro Lozano Baño on 21/1/25.
 //
-
 import SwiftUI
 
 struct PlanetStatsView: View {
