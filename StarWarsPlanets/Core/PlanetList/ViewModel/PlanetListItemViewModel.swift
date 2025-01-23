@@ -18,7 +18,7 @@ class PlanetListItemViewModel: ObservableObject {
     init(planet: PlanetEntity) {
         self.planet = planet
         self.planetName = planet.name ?? "Unknown Planet"
-        self.population = String(planet.population ?? "Uknown Population")
+        self.population = planet.population?.formatAmountNumber() ?? "Unknown Population"
         self.climate = planet.climate?.splitAndTrimValues() ?? []
     }
 }

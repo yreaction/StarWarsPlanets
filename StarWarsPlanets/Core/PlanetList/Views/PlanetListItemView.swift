@@ -14,10 +14,15 @@ struct PlanetListItemView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(viewModel.planetName)
-                        .font(.planetFont(size: 25))
+                        .font(.planetFont(size: 30))
                         .foregroundColor(.primary)
-                    PlanetPopulationView(population: viewModel.population)
-                }
+                    Spacer()
+                    PlanetStatsView(value: viewModel.population, title: "Population")
+                        .padding(8)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
+                }.padding(5)
                 HStack{
                     ForEach(viewModel.climate, id: \.self) { climate in
                         PlanetDetailChip(value: climate, color: .yellow)
@@ -25,6 +30,7 @@ struct PlanetListItemView: View {
                 }
             }
             .padding(.leading, 8)
+            
         }
     }
 }

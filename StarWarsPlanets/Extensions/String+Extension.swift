@@ -14,7 +14,7 @@ extension String {
 
     func formatAmountNumber() -> String {
         if let number = Double(self) {
-            return number.formatted(.number.grouping(.automatic))
+            return number.formatted(.number.notation(.compactName).precision(.significantDigits(3)))
         } else {
             return self
         }
