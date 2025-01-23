@@ -12,6 +12,7 @@ public enum NetworkError: Error {
     case decodingError(Error)
     case other(Error)
 }
+
 protocol NetworkManagerProtocol {
     func request<T: Decodable>(endpoint: Endpoint, responseType: T.Type) async throws -> T
 }

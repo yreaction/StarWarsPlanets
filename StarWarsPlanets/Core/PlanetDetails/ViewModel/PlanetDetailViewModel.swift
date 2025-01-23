@@ -22,13 +22,13 @@ class PlanetDetailViewModel: ObservableObject {
     init(planet: PlanetEntity) {
         self.title = Self.formatTitle(from: planet.name)
         self.statistics = Self.buildStatistics(from: planet)
-        self.populationDescription = Self.formatPopulation(from: planet.population, defaultValue: "Unknown Population")
+        self.populationDescription = planet.population?.formatAmountNumber() ?? "Unknown Population"
     }
 
     static func buildStatistics(from planet: PlanetEntity) -> PlanetStatistics {
         return PlanetStatistics(
-            terrain: Self.splitAndTrimValues(planet.terrain, defaultValue: "Uknown Terrain"),
-            climate: Self.splitAndTrimValues(planet.climate, defaultValue: "Uknown climate"),
+            terrain: planet.terrain?.splitAndTrimValues() ?? ["Unknown terrain"],
+            climate: planet.climate?.splitAndTrimValues() ?? ["Unknown climate"],
             diameter: planet.diameter ?? "Unknown Diameter",
             gravity: planet.gravity ?? "Unknown Gravity"
         )
@@ -36,29 +36,5 @@ class PlanetDetailViewModel: ObservableObject {
 
     static func formatTitle(from name: String?) -> String {
         return name?.isEmpty == false ? name! : "Unknown Planet"
-    }
-
-    static func formatPopulation(from population: String?, defaultValue: String) -> String {
-        guard let population = population, !population.isEmpty else {
-            return defaultValue
-        }
-        if let number = Double(population) {
-            return number.formatted(.number.grouping(.automatic))
-        } else {
-            return defaultValue
-        }
-    }
-
-    static func formatDescription(_ description: String?, default defaultValue: String) -> String {
-        return description?.isEmpty == false ? description! : defaultValue
-    }
-
-    static func splitAndTrimValues(_ description: String?, defaultValue: String) -> [String] {
-        guard let description = description, !description.isEmpty else {
-            return [defaultValue]
-        }
-        return description
-            .split(separator: ",")
-            .map { $0.trimmingCharacters(in: .whitespaces)}
     }
 }

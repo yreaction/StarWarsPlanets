@@ -69,10 +69,10 @@ extension PlanetEntity {
         let entity = PlanetEntity(context: context)
         entity.name = "Earth"
         entity.terrain = "Mountainous"
-        entity.population = "7.8 Billion"
+        entity.population = "7800000"
         entity.climate = "Arid, Temperate Humid"
         entity.terrain = "Desert, Grassland, Mountain"
-        entity.gravity = "9.8"
+        entity.gravity = "9"
         entity.diameter = "100000"
         return entity
     }

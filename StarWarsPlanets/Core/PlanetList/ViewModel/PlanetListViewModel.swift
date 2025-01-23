@@ -50,6 +50,13 @@ class PlanetListViewModel: ObservableObject {
 
         isLoading = false
     }
+    
+    func isLastPlanet(planet: PlanetEntity) -> Bool {
+        guard let lastPlanet = planets.last else {
+            return false
+        }
+        return planet === lastPlanet
+    }
 
     func refreshPlanets() async {
         self.planets.removeAll()

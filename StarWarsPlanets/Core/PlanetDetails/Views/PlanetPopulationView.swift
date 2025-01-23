@@ -13,7 +13,7 @@ struct PlanetPopulationView: View {
             Image(systemName: "person.3.fill")
                 .foregroundStyle(.white)
             Text(population)
-                .font(.planetFont())
+                .font(.planetFont(size: 14))
                 .foregroundStyle(.white)
                 .background(.black)
         }
